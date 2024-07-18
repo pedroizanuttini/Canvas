@@ -1,23 +1,46 @@
+//Actividad clase 6
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 
-/* Dibujando otras formas con canvas */
+// 1 - Dibujo del cuadrado
+ctx.fillStyle = "green";
+ctx.beginPath();
+ctx.moveTo(400,400);
+ctx.lineTo(400,100);
+ctx.lineTo(600,100);
+ctx.lineTo(600,300);
+ctx.lineTo(400,300)
+ctx.fill();
+ctx.fillStyle = "blue"
+ctx.strokeStyle = "black";
+ctx.lineWidth = 5;
+ctx.strokeStyle()
 
-ctx.fillStyle = "red";
+// 2 - Dibujo del triangulo
+
+ctx.fillStyle = "violet";
 ctx.beginPath();
 ctx.moveTo(100,100);
 ctx.lineTo(100,100);
-ctx.lineTo(200,100);
-ctx.lineTo(150,15);
+ctx.lineTo(300,100);
+ctx.lineTo(200,200);
 ctx.fill();
+ctx.strokeStyle = "black";
+ctx.lineWidth = 2;
+ctx.strokeStyle()
+// 3 - Dibujo del circulo
 
-
-ctx.fillStyle = "blue";
+ctx.fillStyle = "black";
 ctx.beginPath();
-//       x   y   R  0°    360°      
-ctx.arc(150,200,50,0, Math.PI * 2,false)
+ctx.arc(50,50,20,0, Math.PI *2, false)
 ctx.fill()
+ctx.strokeStyle = "black";
+ctx.lineWidth = 2;
+ctx.strokeStyle()
+
+
 
 
 
