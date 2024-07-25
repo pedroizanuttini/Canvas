@@ -7,38 +7,35 @@ const ctx = canvas.getContext('2d');
 // 1 - Dibujo del cuadrado
 ctx.fillStyle = "green";
 ctx.beginPath();
-ctx.moveTo(400,400);
+ctx.moveTo(400,100);
 ctx.lineTo(400,100);
 ctx.lineTo(600,100);
 ctx.lineTo(600,300);
 ctx.lineTo(400,300)
 ctx.fill();
-ctx.fillStyle = "blue"
-ctx.strokeStyle = "black";
-ctx.lineWidth = 5;
-ctx.strokeStyle()
+ctx.lineWidth = 1;
+ctx.stroke()
 
 // 2 - Dibujo del triangulo
-
-ctx.fillStyle = "violet";
+ctx.fillStyle = "blue";
 ctx.beginPath();
-ctx.moveTo(100,100);
-ctx.lineTo(100,100);
-ctx.lineTo(300,100);
-ctx.lineTo(200,200);
+ctx.moveTo(100, 100);
+ctx.lineTo(100, 100); 
+ctx.lineTo(300, 100); 
+ctx.lineTo(200, 300);      
 ctx.fill();
-ctx.strokeStyle = "black";
-ctx.lineWidth = 2;
-ctx.strokeStyle()
+ctx.lineWidth = 1;
+ctx.stroke()
+
 // 3 - Dibujo del circulo
 
 ctx.fillStyle = "black";
 ctx.beginPath();
 ctx.arc(50,50,20,0, Math.PI *2, false)
 ctx.fill()
-ctx.strokeStyle = "black";
-ctx.lineWidth = 2;
-ctx.strokeStyle()
+// ctx.strokeStyle = "black";
+// ctx.lineWidth = 2;
+// ctx.strokeStyle()
 
 
 
