@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-container {
+    height: 100%; 
+    margin: 0;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    background-color: #FABC3F; 
+}
+
+.main-container_game-title{
+    color: #C80036;
+    text-align: center;
+    padding-bottom: 15px;
+    padding-top: 10px;
+}
+
+.main-container_restart{
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #C80036;
+    transition: background-color 0.5s;
+    font-weight: 700
+}
+
+.main-container_restart:hover{
+    background-color:#399918;
+    cursor: pointer;
+}
+
+.canvas{
+    margin: 0 auto;
+}

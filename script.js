@@ -6,7 +6,6 @@ let height = canvas.height
 // determinar velocidad
 let xSpeed 
 let ySpeed
-
 const BALL_SIZE = 5
 
 const initBall = (player) =>{
@@ -20,8 +19,8 @@ const initBall = (player) =>{
 }
 
 // valores de las paletas
-const PADDLE_WIDTH = 5
-const PADDLE_HEIGHT = 20
+const PADDLE_WIDTH = 7
+const PADDLE_HEIGHT = 40
 const PADDLE_OFFSET = 10 // Distancia de la paleta desde uno de los extremos
 let leftPaddleTop = 10 // La posicion actual de la paleta con respecto al extremo superior del canvas
 let rightPaddleTop = 30 //
@@ -29,7 +28,6 @@ let rightPaddleTop = 30 //
 //Score
 let leftScore = 0
 let rightScore = 0
-
 
 const draw = () => {
     // Darle color al fondo de mi canvas
@@ -48,13 +46,14 @@ const draw = () => {
     ctx.fillRect( width - PADDLE_OFFSET, rightPaddleTop, PADDLE_WIDTH, PADDLE_HEIGHT)
 
     // Dibujar los scores
-    ctx.fillStyle = '#FFFFFF'
+    ctx.fillStyle = '#06D001'
     ctx.font = "30px monospace"
     ctx.textAlign = "left"
     ctx.fillText(leftScore.toString(),50,50)
 
     ctx.textAlign = 'right'
     ctx.fillText(rightScore.toString(), (width - 50), 50)
+
 }
 
 const update = () => {
@@ -62,15 +61,22 @@ const update = () => {
     ballPosition.y += ySpeed
 }
 
-const adjustAngle = (distanceFromTop, DistanceFromBottom) =>{
+const adjustAngle1 = (distanceFromTop, distanceFromBottom) =>{
     if ( distanceFromTop < 0 ) { // Si la pelota golpea la parte superior de la paleta, se reduce su velocidad.
         ySpeed -= 0.5
-    } else if ( DistanceFromBottom < 0 ) {
+    } else if ( distanceFromBottom < 0 ) {
       ySpeed += 0.5  
     }
 }
 
-// Preguntar sobre esta funcion que no entiendo!!
+const adjustAngle2 = (distanceTopBallFromBottomPaddle, distanceBottomBallFromTopPaddle) =>{
+    if ( distanceTopBallFromBottomPaddle= 0){
+        ySpeed -= 0.3 
+    } else if (distanceBottomBallFromTopPaddle=0){
+        ySpeed += 0.3
+    }
+}
+
 const checkPaddleCollision = (ball, paddle) => {
     return(
         ball.left < paddle.right && 
@@ -108,8 +114,11 @@ const checkCollision = () => {
     if(checkPaddleCollision(ball, rightPaddle)){
         console.log('colision!')
         let distanceFromTop = ball.top - rightPaddle.top 
-        let distanceFromBottom = rightPaddle.bottom - ball.bottom 
-        adjustAngle(distanceFromTop, distanceFromBottom)
+        let distanceFromBottom = rightPaddle.bottom - ball.bottom
+        let distanceBottomBallFromTopPaddle = ball.bottom - rightPaddle.top
+        let distanceTopBallFromBottomPaddle = rightPaddle.bottom - ball.top
+        adjustAngle1(distanceFromTop, distanceFromBottom)
+        adjustAngle2(distanceTopBallFromBottomPaddle,distanceBottomBallFromTopPaddle)
         xSpeed = -Math.abs(xSpeed) // al colocar Math.abs y luego ponerle un signo negativo me aseguro de que si o si el sentido devuelva negativo
     }
 
@@ -117,7 +126,10 @@ const checkCollision = () => {
         console.log('colision!')
         let distanceFromTop = ball.top - leftPaddle.top
         let distanceFromBottom = leftPaddle.bottom - ball.bottom
-        adjustAngle(distanceFromTop, distanceFromBottom)
+        let distanceBottomBallFromTopPaddle = ball.bottom - leftPaddle.top
+        let distanceTopBallFromBottomPaddle = leftPaddle.bottom - ball.top
+        adjustAngle1(distanceFromTop, distanceFromBottom)
+        adjustAngle2(distanceBottomBallFromTopPaddle, distanceTopBallFromBottomPaddle)
         xSpeed = Math.abs(xSpeed)
     }
 
@@ -133,14 +145,31 @@ const checkCollision = () => {
         }
     }
 
-
     // verificar la colision en el eje y
     if (ball.top < 0 || ball.top > height ){
         ySpeed = -ySpeed
     }
 }
 
+const stopGame = () => {
+    if ( leftScore == 3 || rightScore ==3){
+        xSpeed = 0
+        ySpeed = 0
+        ballPosition.x = width/2
+        ballPosition.y = height/2
+    }
+}
+
+const restartGame = () => {
+    rightScore = 0
+    leftScore = 0 
+    xSpeed = 4
+    ySpeed = 2
+}
+
 // Eventos
+document.querySelector('.main-container_restart').addEventListener('click',restartGame)
+
 document.addEventListener('mousemove', (e) => {
     if (e.y - canvas.offsetTop + PADDLE_HEIGHT >= height || e.y <= canvas.offsetTop) return 
     rightPaddleTop = e.y - canvas.offsetTop
@@ -154,6 +183,7 @@ const  gameLoop = () => {
     update()
     checkCollision()
     setTimeout(gameLoop,30)
+    stopGame()
 }
 
 initBall() // seta los valores de la pelota cuando se incia el juego
