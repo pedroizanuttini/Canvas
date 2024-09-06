@@ -171,10 +171,16 @@ const restartGame = () => {
 document.querySelector('.main-container_restart').addEventListener('click',restartGame)
 
 document.addEventListener('mousemove', (e) => {
-    if (e.y - canvas.offsetTop + PADDLE_HEIGHT >= height || e.y <= canvas.offsetTop) return 
-    rightPaddleTop = e.y - canvas.offsetTop
-    if (e.y - canvas.offsetTop + PADDLE_HEIGHT >= height || e.y <= canvas.offsetTop) return 
-    leftPaddleTop = e.y - canvas.offsetTop
+    const mousePositionX = e.x - canvas.offsetLeft;
+
+    if (mousePositionX >= width /2 ) {
+        if (e.y - canvas.offsetTop + PADDLE_HEIGHT >= height || e.y <= canvas.offsetTop) return 
+        rightPaddleTop = e.y - canvas.offsetTop
+    }
+    else {
+        if (e.y - canvas.offsetTop + PADDLE_HEIGHT >= height || e.y <= canvas.offsetTop) return 
+        leftPaddleTop = e.y - canvas.offsetTop
+    }
 })
 
 
