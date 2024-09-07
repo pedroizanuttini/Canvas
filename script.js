@@ -41,7 +41,6 @@ const draw = () => {
     ctx.fillStyle = "#7A1CAC"
     ctx.fillRect(PADDLE_OFFSET, leftPaddleTop, PADDLE_WIDTH, PADDLE_HEIGHT)
 
-    // Quiero ponerle color a la otra paleta y no me funciona el ctx.fillStyle
     ctx.fillStyle = "#FFF"
     ctx.fillRect( width - PADDLE_OFFSET, rightPaddleTop, PADDLE_WIDTH, PADDLE_HEIGHT)
 
