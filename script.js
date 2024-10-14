@@ -2,6 +2,11 @@ const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext("2d")
 let width = canvas.width
 let height = canvas.height
+let gameOver = false
+
+
+// Definir sonido
+const synth = new Tone.Synth().toDestination()
 
 // determinar velocidad
 let xSpeed 
@@ -55,6 +60,13 @@ const draw = () => {
 
 }
 
+const drawGameOver = () => {
+    ctx.fillStyle = "#ff0000"
+    ctx.font = "30px monospace"
+    ctx.textAlign = "center"
+    ctx.fillText('GAME OVER', width / 2, height /2)
+}
+
 const update = () => {
     ballPosition.x += xSpeed
     ballPosition.y += ySpeed
@@ -69,9 +81,9 @@ const adjustAngle1 = (distanceFromTop, distanceFromBottom) =>{
 }
 
 const adjustAngle2 = (distanceTopBallFromBottomPaddle, distanceBottomBallFromTopPaddle) =>{
-    if ( distanceTopBallFromBottomPaddle= 0){
+    if ( distanceTopBallFromBottomPaddle == 0) {
         ySpeed -= 0.3 
-    } else if (distanceBottomBallFromTopPaddle=0){
+    } else if (distanceBottomBallFromTopPaddle ==0) {
         ySpeed += 0.3
     }
 }
@@ -112,6 +124,7 @@ const checkCollision = () => {
     // Verificar colision con la paleta derecha
     if(checkPaddleCollision(ball, rightPaddle)){
         console.log('colision!')
+        synth.triggerAttackRelease("C4", "8n")
         let distanceFromTop = ball.top - rightPaddle.top 
         let distanceFromBottom = rightPaddle.bottom - ball.bottom
         let distanceBottomBallFromTopPaddle = ball.bottom - rightPaddle.top
@@ -123,6 +136,7 @@ const checkCollision = () => {
 
     if(checkPaddleCollision(ball, leftPaddle)){
         console.log('colision!')
+        synth.triggerAttackRelease("C4", "8n")
         let distanceFromTop = ball.top - leftPaddle.top
         let distanceFromBottom = leftPaddle.bottom - ball.bottom
         let distanceBottomBallFromTopPaddle = ball.bottom - leftPaddle.top
@@ -142,6 +156,10 @@ const checkCollision = () => {
             leftScore++
             initBall('left')
         }
+
+        if (leftScore == 1 || rightScore == 1 ){
+            gameOver = true
+        }
     }
 
     // verificar la colision en el eje y
@@ -150,20 +168,14 @@ const checkCollision = () => {
     }
 }
 
-const stopGame = () => {
-    if ( leftScore == 3 || rightScore ==3){
-        xSpeed = 0
-        ySpeed = 0
-        ballPosition.x = width/2
-        ballPosition.y = height/2
-    }
-}
-
 const restartGame = () => {
     rightScore = 0
     leftScore = 0 
     xSpeed = 4
     ySpeed = 2
+    gameOver = false
+    initBall('left')
+    gameLoop()
 }
 
 // Eventos
@@ -187,8 +199,13 @@ const  gameLoop = () => {
     draw()
     update()
     checkCollision()
-    setTimeout(gameLoop,30)
-    stopGame()
+
+    if ( gameOver ){
+        draw()
+        drawGameOver()
+    }else{
+        setTimeout(gameLoop,30)
+    }
 }
 
 initBall() // seta los valores de la pelota cuando se incia el juego
